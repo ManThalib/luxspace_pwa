@@ -1,4 +1,6 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import Arrived from './components/Arrived';
 import Aside from './components/Aside';
 import Browse from './components/Browse';
@@ -7,13 +9,16 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Offline from './components/Offline';
-import './tailwind.css';
+import Profile from './pages/Profile';
+import Splash from './pages/Splash';
+
 
 function App() {
   const [items, setItems] = React.useState([]);
 
   const [offlineStatus, setOfflineStatus] = React.useState(!navigator.onLine);
 
+  const [isLoading, setIsLoading] = React.useState(true);
   function handleOfflineStatus() {
     setOfflineStatus(!navigator.onLine);
   }
@@ -40,6 +45,9 @@ function App() {
     window.addEventListener('online', handleOfflineStatus);
     window.addEventListener('offline', handleOfflineStatus);
 
+    setTimeout(function () {
+      setIsLoading(false)
+    }, 1500);
     return function () {
       window.removeEventListener('online', handleOfflineStatus);
       window.removeEventListener('offline', handleOfflineStatus);
@@ -51,16 +59,35 @@ function App() {
 
   return (
     <>
-      {offlineStatus && <Offline />}
-      <Header />
-      <Hero />
-      <Browse />
-      <Arrived items={items} />
-      <Clients />
-      <Aside />
-      <Footer />
+      {isLoading === true ?
+        <Splash /> :
+        (
+          <>
+            {offlineStatus && <Offline />}
+            <Header />
+            <Hero />
+            <Browse />
+            <Arrived items={items} />
+            <Clients />
+            <Aside />
+            <Footer />
+          </>
+        )
+      }
+
     </>
   );
 }
 
-export default App;
+export default function AppRoutes() {
+  return (
+
+
+    <Router>
+      <Routes>
+        <Route path='/' exact element={<App />} />
+        <Route path='/profile' exact element={<Profile />} />
+      </Routes>
+    </Router>
+  )
+};

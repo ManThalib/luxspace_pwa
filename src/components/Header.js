@@ -42,6 +42,13 @@ function Header() {
                                 </a>
 
                             </li>
+                            <li className="mx-3 py-6 md:py-0">
+                                <a href="/profile" className="text-black md:text-white hover:underline"
+                                >
+                                    Profile
+                                </a>
+
+                            </li>
                         </ul>
                     </div>
                     <div className="w-auto">
